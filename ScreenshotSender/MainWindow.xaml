@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScreenshotSender"
         mc:Ignorable="d"
-        Title="Screenshot sender"
+        Title="{Binding Title}"
         Height="450"
-        Width="800">
+        Width="800"
+        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}" >
     <Grid>
         
     </Grid>
