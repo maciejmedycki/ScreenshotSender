@@ -1,9 +1,9 @@
-﻿using System.Net.Mail;
+﻿using System.IO;
 
 namespace ScreenshotSender.Model.Interface
 {
     public interface ILastFileCollector
     {
-        LinkedResource GetLastFile();
+        FileInfo GetLastFile();
     }
 }

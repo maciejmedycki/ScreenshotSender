@@ -5,7 +5,6 @@ using System;
 
 namespace ScreenshotSender.Model.Actions
 {
-    [Serializable]
     public class BitmapSaver : BaseAction
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(BitmapSaver));

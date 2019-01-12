@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace ScreenshotSender.Model
@@ -52,26 +53,22 @@ namespace ScreenshotSender.Model
 
         private IEnumerable<IAction> Deserialize(string serializedActions)
         {
+            //TODO: rework it!
             if (!string.IsNullOrEmpty(serializedActions))
             {
-                var serializer = new XmlSerializer(typeof(List<BaseAction>));
-                using (var reader = new StringReader(serializedActions))
-                {
-                    var deserializedObject = (List<BaseAction>)serializer.Deserialize(reader);
-                    return deserializedObject;
-                }
+                //TODO: it should be in json, parse and create proper instance with proper fields initialized.
             }
             return null;
         }
 
         private string Serialize(IEnumerable<BaseAction> actionsToSerialize)
         {
-            var serializer = new XmlSerializer(typeof(List<BaseAction>));
-            using (var writer = new StringWriter())
+            var stringBuilder = new StringBuilder();
+            foreach (var action in actionsToSerialize)
             {
-                serializer.Serialize(writer, actionsToSerialize.ToList());
-                return writer.ToString();
+                stringBuilder.Append(action.Serialize());
             }
+            return stringBuilder.ToString();
         }
     }
 }

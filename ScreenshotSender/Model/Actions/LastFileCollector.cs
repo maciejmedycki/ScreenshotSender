@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
-using System.Net.Mime;
 
 namespace ScreenshotSender.Model.Actions
 {
@@ -20,7 +19,7 @@ namespace ScreenshotSender.Model.Actions
             _settingsHandler = settingsHandler;
         }
 
-        public LinkedResource GetLastFile()
+        public FileInfo GetLastFile()
         {
             if (_settingsHandler.GetAttachLastFileFromLocation())
             {
@@ -29,18 +28,7 @@ namespace ScreenshotSender.Model.Actions
                 if (directoryInfo != null)
                 {
                     var latestFile = directoryInfo.GetFiles().OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
-                    if (latestFile != null)
-                    {
-                        using (var memoryStream = new MemoryStream(File.ReadAllBytes(latestFile.FullName)))
-                        {
-                            memoryStream.Position = 0;
-                            //TODO: why it is not working?                        
-                            // return new LinkedResource(memoryStream, MimeTypes.GetMimeType(latestFile.Name));
-                            var mimeType = MimeTypes.GetMimeType(latestFile.Name);
-                            var linkedResource = new LinkedResource(memoryStream, mimeType);
-                            return linkedResource;
-                        }
-                    }
+                    return latestFile;
                 }
             }
             return null;

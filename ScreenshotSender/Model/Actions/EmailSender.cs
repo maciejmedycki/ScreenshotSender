@@ -12,7 +12,6 @@ using System.Net.Mime;
 
 namespace ScreenshotSender.Model.Actions
 {
-    [Serializable]
     public class EmailSender : BaseAction
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(EmailSender));
@@ -53,7 +52,16 @@ namespace ScreenshotSender.Model.Actions
                 memoryStreamScreenshot.Position = 0;
                 var linkredResourceScreenshot = new LinkedResource(memoryStreamScreenshot, MediaTypeNames.Image.Jpeg);
 
-                var linkredResourceLastFile = _lastFileCollector.GetLastFile();
+                LinkedResource linkedResourceLastFile = null;
+                MemoryStream memoryStreamLastFile = null;
+                var latestFileInfo = _lastFileCollector.GetLastFile();
+                if (latestFileInfo != null)
+                {
+                    memoryStreamLastFile = new MemoryStream(File.ReadAllBytes(latestFileInfo.FullName));
+                    memoryStreamLastFile.Position = 0;
+                    var mimeType = MimeTypes.GetMimeType(latestFileInfo.Name);
+                    linkedResourceLastFile = new LinkedResource(memoryStreamLastFile, mimeType);
+                }
 
                 //TODO: missing in ISettingsHandler
                 mail.Subject = "Screenshot sender";
@@ -70,20 +78,28 @@ namespace ScreenshotSender.Model.Actions
                       </html>
                      ";
 
-                if (linkredResourceLastFile != null)
+                if (linkedResourceLastFile != null && linkedResourceLastFile.ContentType.MediaType.Contains("image"))
                 {
-                    htmlString.Replace("#$LATESTFILELINKEDRESOURCEHOLDER$#", $"< img src = 'cid: { linkredResourceLastFile.ContentId}' />");
+                    htmlString = htmlString.Replace("#$LATESTFILELINKEDRESOURCEHOLDER$#", $"<img src = 'cid: { linkedResourceLastFile.ContentId}' />");
                 }
                 else
                 {
-                    htmlString.Replace("#$LATESTFILELINKEDRESOURCEHOLDER$#", string.Empty);
+                    htmlString = htmlString.Replace("#$LATESTFILELINKEDRESOURCEHOLDER$#", string.Empty);
                 }
                 var alternateView = AlternateView.CreateAlternateViewFromString(htmlString, null, MediaTypeNames.Text.Html);
                 alternateView.LinkedResources.Add(linkredResourceScreenshot);
-                if (linkredResourceLastFile != null)
+                if (linkedResourceLastFile != null)
                 {
-                    alternateView.LinkedResources.Add(linkredResourceLastFile);
+                    if (linkedResourceLastFile.ContentType.MediaType.Contains("image"))
+                    {
+                        alternateView.LinkedResources.Add(linkedResourceLastFile);
+                    }
+                    else
+                    {
+                        mail.Attachments.Add(new Attachment(latestFileInfo.FullName));
+                    }
                 }
+
                 mail.AlternateViews.Add(alternateView);
 
                 var smtp = new SmtpClient();
@@ -103,9 +119,10 @@ namespace ScreenshotSender.Model.Actions
                 //smtp.SendAsync(mail, null);
                 memoryStreamScreenshot.Dispose();
                 linkredResourceScreenshot.Dispose();
-                if (linkredResourceLastFile != null)
+                if (linkedResourceLastFile != null)
                 {
-                    linkredResourceLastFile.Dispose();
+                    linkedResourceLastFile.Dispose();
+                    memoryStreamLastFile.Dispose();
                 }
             }
         }

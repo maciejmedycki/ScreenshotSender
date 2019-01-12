@@ -75,6 +75,7 @@
     <Compile Include="Model\LocalizedStrings.cs" />
     <Compile Include="Model\MachineKeyHandler.cs" />
     <Compile Include="Model\Messages\ScreenShotTakenMessage.cs" />
+    <Compile Include="Model\MimeTypes.cs" />
     <Compile Include="Model\ScreenshotTaker.cs" />
     <Compile Include="Model\SettingsHandler.cs" />
     <Compile Include="Model\SettingsKeys.cs" />
@@ -152,11 +153,6 @@
   <ItemGroup>
     <PackageReference Include="log4net">
       <Version>2.0.8</Version>
-    </PackageReference>
-    <PackageReference Include="MimeTypes">
-      <Version>1.1.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="MvvmLight">
       <Version>5.4.1.1</Version>

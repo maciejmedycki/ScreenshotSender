@@ -1,6 +1,4 @@
 ﻿using ScreenshotSender.Model.Interface;
-using System.IO;
-using System.Xml.Serialization;
 
 namespace ScreenshotSender.Model
 {
@@ -12,12 +10,7 @@ namespace ScreenshotSender.Model
 
         public string Serialize()
         {
-            var serializer = new XmlSerializer(typeof(BaseAction));
-            using (var writer = new StringWriter())
-            {
-                serializer.Serialize(writer, this);
-                return writer.ToString();
-            }
+            return $"{{Name:{Name}, ShouldExecute:{ShouldExecute}, Type:{GetType()}}}";
         }
     }
 }
