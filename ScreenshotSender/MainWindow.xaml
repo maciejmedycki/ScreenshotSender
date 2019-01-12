@@ -4,12 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScreenshotSender"
+        xmlns:model="clr-namespace:ScreenshotSender.Model"
+        xmlns:view="clr-namespace:ScreenshotSender.View"
         mc:Ignorable="d"
         Title="{Binding Title}"
-        Height="450"
+        Height="600"
         Width="800"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}" >
     <Grid>
-        
+        <StackPanel>
+            <view:EmailSettings DataContext="{Binding EmailSettingsViewModel}"></view:EmailSettings>
+            <view:SendSettings DataContext="{Binding SettingsViewModel}"></view:SendSettings>
+            <view:Actions DataContext="{Binding ActionsViewModel}"></view:Actions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Content="{Binding Source={x:Static model:LocalizedStrings.TakeScreenshotCaption}}"  Command="{Binding TakeScreenshot}"/>
+                <Button Grid.Column="2" Content="{Binding StartStopButtonContent}"  Command="{Binding StartStop}"/>
+            </Grid>
+        </StackPanel>
     </Grid>
 </Window>

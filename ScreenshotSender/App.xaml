@@ -11,6 +11,25 @@
     <Application.Resources>
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+
+            <Style x:Key="MarginStyle" TargetType="Control">
+                <Setter Property="Margin" Value="2" />
+            </Style>
+
+            <Style TargetType="Button" BasedOn="{StaticResource MarginStyle}">
+                <Setter Property="MinWidth" Value="100" />
+            </Style>
+
+            <Style TargetType="TextBox" BasedOn="{StaticResource MarginStyle}">
+            </Style>
+
+            <Style TargetType="PasswordBox" BasedOn="{StaticResource MarginStyle}">
+            </Style>
+
+            <Style TargetType="CheckBox" BasedOn="{StaticResource MarginStyle}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

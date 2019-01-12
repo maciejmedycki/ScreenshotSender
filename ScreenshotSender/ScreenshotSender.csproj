@@ -37,6 +37,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,8 +57,44 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\ActionHandler.cs" />
+    <Compile Include="Model\Actions\LastFileCollector.cs" />
+    <Compile Include="Model\BaseAction.cs" />
+    <Compile Include="Model\Actions\BitmapSaver.cs" />
+    <Compile Include="Model\Display.cs" />
+    <Compile Include="Model\DisplayHandler.cs" />
+    <Compile Include="Model\Actions\EmailSender.cs" />
+    <Compile Include="Model\Interface\IAction.cs" />
+    <Compile Include="Model\Interface\IActionLoader.cs" />
+    <Compile Include="Model\Interface\IDisplayHandler.cs" />
+    <Compile Include="Model\Interface\ILastFileCollector.cs" />
+    <Compile Include="Model\Interface\IMachineKeyHandler.cs" />
+    <Compile Include="Model\Interface\IScreenshotTaker.cs" />
+    <Compile Include="Model\Interface\ISettingsHandler.cs" />
+    <Compile Include="Model\Interface\IWindowMinimizer.cs" />
+    <Compile Include="Model\LocalizedStrings.cs" />
+    <Compile Include="Model\MachineKeyHandler.cs" />
+    <Compile Include="Model\Messages\ScreenShotTakenMessage.cs" />
+    <Compile Include="Model\ScreenshotTaker.cs" />
+    <Compile Include="Model\SettingsHandler.cs" />
+    <Compile Include="Model\SettingsKeys.cs" />
+    <Compile Include="Model\WindowMinimizer.cs" />
+    <Compile Include="ViewModel\ActionsViewModel.cs" />
+    <Compile Include="ViewModel\ActionViewModel.cs" />
+    <Compile Include="ViewModel\DisplayViewModel.cs" />
+    <Compile Include="ViewModel\EmailSettingsViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\Actions.xaml.cs">
+      <DependentUpon>Actions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EmailSettings.xaml.cs">
+      <DependentUpon>EmailSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SendSettings.xaml.cs">
+      <DependentUpon>SendSettings.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -69,6 +107,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Actions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmailSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SendSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -103,13 +153,15 @@
     <PackageReference Include="log4net">
       <Version>2.0.8</Version>
     </PackageReference>
+    <PackageReference Include="MimeTypes">
+      <Version>1.1.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="MvvmLight">
       <Version>5.4.1.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="View\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
