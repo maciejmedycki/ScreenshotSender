@@ -1,15 +1,14 @@
 ﻿using ScreenshotSender.Model.Interface;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml.Serialization;
 
 namespace ScreenshotSender.Model
 {
-    public class ActionHandler : IActionHandler
+    public partial class ActionHandler : IActionHandler
     {
+        private const char _actionSeparator = ';';
         private static readonly IList<IAction> _actions = new List<IAction>();
         private readonly ISettingsHandler _settingsHandler;
 
@@ -35,7 +34,7 @@ namespace ScreenshotSender.Model
                 var action = Activator.CreateInstance(type) as IAction;
                 if (deserializedSavedSettings != null)
                 {
-                    action.ShouldExecute = deserializedSavedSettings.Any(a => a.Name == action.Name && a.ShouldExecute);
+                    action.ShouldExecute = deserializedSavedSettings.Any(a => a.Name == action.Name && a.Type == type.ToString() && a.ShouldExecute);
                 }
                 if (!_actions.Contains(action))
                 {
@@ -47,18 +46,20 @@ namespace ScreenshotSender.Model
 
         public void Save()
         {
-            var serializedData = Serialize(_actions.Select(a=>(BaseAction)a));
+            var serializedData = Serialize(_actions.Select(a => (BaseAction)a));
             _settingsHandler.SetSelectedActions(serializedData);
         }
 
-        private IEnumerable<IAction> Deserialize(string serializedActions)
+        private IEnumerable<ActionSetting> Deserialize(string serializedActions)
         {
-            //TODO: rework it!
             if (!string.IsNullOrEmpty(serializedActions))
             {
-                //TODO: it should be in json, parse and create proper instance with proper fields initialized.
+                var splitted = serializedActions.Split(_actionSeparator);
+                foreach (var actionString in splitted)
+                {
+                    yield return new ActionSetting(actionString);
+                }
             }
-            return null;
         }
 
         private string Serialize(IEnumerable<BaseAction> actionsToSerialize)
@@ -66,7 +67,12 @@ namespace ScreenshotSender.Model
             var stringBuilder = new StringBuilder();
             foreach (var action in actionsToSerialize)
             {
-                stringBuilder.Append(action.Serialize());
+                if (stringBuilder.Length > 0)
+                {
+                    stringBuilder.Append(_actionSeparator);
+                }
+                var serialized = action.Serialize();
+                stringBuilder.Append(serialized);
             }
             return stringBuilder.ToString();
         }

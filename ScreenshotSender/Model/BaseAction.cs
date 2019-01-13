@@ -10,7 +10,7 @@ namespace ScreenshotSender.Model
 
         public string Serialize()
         {
-            return $"{{Name:{Name}, ShouldExecute:{ShouldExecute}, Type:{GetType()}}}";
+            return $"{{Name:{Name},ShouldExecute:{ShouldExecute},Type:{GetType()}}}";
         }
     }
 }
