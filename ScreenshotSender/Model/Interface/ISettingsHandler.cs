@@ -2,6 +2,8 @@
 {
     public interface ISettingsHandler
     {
+        bool GetActionsIsExpanded();
+
         bool GetAttachLastFileFromLocation();
 
         bool GetAutoStart();
@@ -15,6 +17,8 @@
         string GetEmailFromAlias();
 
         string GetEmailFromPassword();
+
+        bool GetEmailIsExpanded();
 
         bool GetEmailSmtpEnableSsl();
 
@@ -32,6 +36,10 @@
 
         string GetSelectedActions();
 
+        bool GetSettingsIsExpanded();
+
+        void SetActionsIsExpanded(bool isExpanded);
+
         void SetAttachLastFileFromLocation(bool lastFileToAttachLocation);
 
         void SetAutoStart(bool autoStart);
@@ -45,6 +53,8 @@
         void SetEmailFromAlias(string emailFromAlias);
 
         void SetEmailFromPassword(string emailFromPassword);
+
+        void SetEmailIsExpanded(bool isExpanded);
 
         void SetEmailSmtpEnableSsl(bool emailSmtpEnableSsl);
 
@@ -61,5 +71,7 @@
         void SetMachineKey(string machineKey);
 
         void SetSelectedActions(string selectedActions);
+
+        void SetSettingsIsExpanded(bool isExpanded);
     }
 }

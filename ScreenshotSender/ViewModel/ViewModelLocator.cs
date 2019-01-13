@@ -23,6 +23,7 @@ namespace ScreenshotSender.ViewModel
             SimpleIoc.Default.Register<IWindowMinimizer, WindowMinimizer>();
             SimpleIoc.Default.Register<IScreenshotTaker, ScreenshotTaker>();
             SimpleIoc.Default.Register<ILastFileCollector, LastFileCollector>();
+            SimpleIoc.Default.Register<IOpenFileDialog, OpenFileDialog>();
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();

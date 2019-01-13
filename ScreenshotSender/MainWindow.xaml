@@ -10,23 +10,33 @@
         Title="{Binding Title}"
         Height="600"
         Width="800"
-        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}" >
+        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
     <Grid>
-        <StackPanel>
-            <view:EmailSettings DataContext="{Binding EmailSettingsViewModel}"></view:EmailSettings>
-            <view:SendSettings DataContext="{Binding SettingsViewModel}"></view:SendSettings>
-            <view:Actions DataContext="{Binding ActionsViewModel}"></view:Actions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="1" Content="{Binding Source={x:Static model:LocalizedStrings.TakeScreenshotCaption}}"  Command="{Binding TakeScreenshot}"/>
-                <Button Grid.Column="2" Content="{Binding StartStopButtonContent}"  Command="{Binding StartStop}"/>
-            </Grid>
-        </StackPanel>
+        <view:EmailSettings Grid.Row="0" DataContext="{Binding EmailSettingsViewModel}"></view:EmailSettings>
+        <view:SendSettings Grid.Row="1" DataContext="{Binding SettingsViewModel}"></view:SendSettings>
+        <view:Actions Grid.Row="2" DataContext="{Binding ActionsViewModel}"></view:Actions>
+
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="1" Grid.Column="1" Content="{Binding Source={x:Static model:LocalizedStrings.TakeScreenshotCaption}}"  Command="{Binding TakeScreenshot}" />
+            <Button Grid.Row="1" Grid.Column="2" Content="{Binding StartStopButtonContent}"  Command="{Binding StartStop}" />
+        </Grid>
     </Grid>
 </Window>

@@ -7,8 +7,8 @@
       mc:Ignorable="d"
       xmlns:model="clr-namespace:ScreenshotSender.Model"
       d:DesignHeight="450" d:DesignWidth="800">
-    <GroupBox Header="{Binding Source={x:Static model:LocalizedStrings.ActionsTitle}}">
-        <ListView ItemsSource="{Binding Actions}">
+    <Expander Header="{Binding Source={x:Static model:LocalizedStrings.ActionsTitle}}" IsExpanded="{Binding IsExpanded}">
+        <ListView ItemsSource="{Binding Actions}" BorderThickness="0" Padding="5">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -17,10 +17,10 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <CheckBox Grid.Column="0" IsChecked="{Binding ShouldExecute, Mode=TwoWay}" />
-                        <Label Grid.Column="1" Content="{Binding Name}"/>
+                        <Label Grid.Column="1" Content="{Binding Name}" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </GroupBox>
+    </Expander>
 </UserControl>

@@ -5,6 +5,7 @@ namespace ScreenshotSender.Model
 {
     /// <summary>
     ///    Provides utilities for mapping file names and extensions to MIME-types.
+    ///    Taken from nuget package MimeTypes, but copied locally (wasn't working otherwise).
     /// </summary>
     public static class MimeTypes
     {

@@ -4,6 +4,10 @@
     {
         public static string CheckInterval = "CheckInterval";
 
+        public static string ActionsIsExpanded = "ActionsIsExpanded";
+        public static string SettingsIsExpanded = "SettingsIsExpanded";
+        public static string EmailIsExpanded = "EmailIsExpanded";
+
         public static string EmailFrom = "EmailFrom";
         public static string EmailFromAlias = "EmailFromAlias";        
         public static string EmailFromPassword = "EmailFromPassword";

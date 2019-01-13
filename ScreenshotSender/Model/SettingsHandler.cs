@@ -8,6 +8,11 @@ namespace ScreenshotSender.Model
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(SettingsHandler));
 
+        public bool GetActionsIsExpanded()
+        {
+            return Get<bool>(SettingsKeys.ActionsIsExpanded);
+        }
+
         public bool GetAttachLastFileFromLocation()
         {
             return Get<bool>(SettingsKeys.AttachLastFileFromLocationKey);
@@ -41,6 +46,11 @@ namespace ScreenshotSender.Model
         public string GetEmailFromPassword()
         {
             return Get<string>(SettingsKeys.EmailFromPassword);
+        }
+
+        public bool GetEmailIsExpanded()
+        {
+            return Get<bool>(SettingsKeys.EmailIsExpanded);
         }
 
         public bool GetEmailSmtpEnableSsl()
@@ -83,6 +93,16 @@ namespace ScreenshotSender.Model
             return Get<string>(SettingsKeys.SelectedActions);
         }
 
+        public bool GetSettingsIsExpanded()
+        {
+            return Get<bool>(SettingsKeys.SettingsIsExpanded);
+        }
+
+        public void SetActionsIsExpanded(bool isExpanded)
+        {
+            Set(SettingsKeys.ActionsIsExpanded, isExpanded);
+        }
+
         public void SetAttachLastFileFromLocation(bool attachLastFileFromLocation)
         {
             Set(SettingsKeys.AttachLastFileFromLocationKey, attachLastFileFromLocation);
@@ -116,6 +136,11 @@ namespace ScreenshotSender.Model
         public void SetEmailFromPassword(string emailFromPassword)
         {
             Set(SettingsKeys.EmailFromPassword, emailFromPassword);
+        }
+
+        public void SetEmailIsExpanded(bool isExpanded)
+        {
+            Set(SettingsKeys.EmailIsExpanded, isExpanded);
         }
 
         public void SetEmailSmtpEnableSsl(bool emailSmtpEnableSsl)
@@ -156,6 +181,11 @@ namespace ScreenshotSender.Model
         public void SetSelectedActions(string selectedActions)
         {
             Set(SettingsKeys.SelectedActions, selectedActions);
+        }
+
+        public void SetSettingsIsExpanded(bool isExpanded)
+        {
+            Set(SettingsKeys.SettingsIsExpanded, isExpanded);
         }
 
         private T Get<T>(string settingKey)

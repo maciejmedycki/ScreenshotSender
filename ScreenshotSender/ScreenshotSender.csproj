@@ -73,6 +73,7 @@
     <Compile Include="Model\Interface\IDisplayHandler.cs" />
     <Compile Include="Model\Interface\ILastFileCollector.cs" />
     <Compile Include="Model\Interface\IMachineKeyHandler.cs" />
+    <Compile Include="Model\Interface\IOpenFileDialog.cs" />
     <Compile Include="Model\Interface\IScreenshotTaker.cs" />
     <Compile Include="Model\Interface\ISettingsHandler.cs" />
     <Compile Include="Model\Interface\IWindowMinimizer.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Model\MachineKeyHandler.cs" />
     <Compile Include="Model\Messages\ScreenShotTakenMessage.cs" />
     <Compile Include="Model\MimeTypes.cs" />
+    <Compile Include="Model\OpenFileDialog.cs" />
     <Compile Include="Model\ScreenshotTaker.cs" />
     <Compile Include="Model\SettingsHandler.cs" />
     <Compile Include="Model\SettingsKeys.cs" />
@@ -164,6 +166,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="monitor.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="folder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -202,5 +202,41 @@ namespace ScreenshotSender.Properties {
                 this["LastFileToAttachLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ActionsIsExpanded {
+            get {
+                return ((bool)(this["ActionsIsExpanded"]));
+            }
+            set {
+                this["ActionsIsExpanded"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SettingsIsExpanded {
+            get {
+                return ((bool)(this["SettingsIsExpanded"]));
+            }
+            set {
+                this["SettingsIsExpanded"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EmailIsExpanded {
+            get {
+                return ((bool)(this["EmailIsExpanded"]));
+            }
+            set {
+                this["EmailIsExpanded"] = value;
+            }
+        }
     }
 }

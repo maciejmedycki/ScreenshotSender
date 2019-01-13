@@ -18,12 +18,13 @@ namespace ScreenshotSender.ViewModel
         private int _emailSmtpPort;
         private string _emailSmtpUserName;
         private string _emailTo;
+        private bool _isExpanded;
 
         public EmailSettingsViewModel(ISettingsHandler settingsHandler)
         {
             if (settingsHandler == null)
             {
-                throw new ArgumentException("Parameter cannot be null", "settingsHandler");
+                throw new ArgumentException("Parameter cannot be null", nameof(settingsHandler));
             }
             _settingsHandler = settingsHandler;
             _emailFrom = settingsHandler.GetEmailFrom();
@@ -34,6 +35,7 @@ namespace ScreenshotSender.ViewModel
             _emailSmtpHost = settingsHandler.GetEmailSmtpHost();
             _emailSmtpPort = settingsHandler.GetEmailSmtpPort();
             _emailSmtpUserName = settingsHandler.GetEmailSmtpUserName();
+            _isExpanded = settingsHandler.GetEmailIsExpanded();
         }
 
         public string EmailFrom
@@ -145,6 +147,20 @@ namespace ScreenshotSender.ViewModel
                 _emailTo = value;
                 _settingsHandler.SetEmailTo(value);
                 RaisePropertyChanged(() => EmailTo);
+            }
+        }
+
+        public bool IsExpanded
+        {
+            get
+            {
+                return _isExpanded;
+            }
+            set
+            {
+                _isExpanded = value;
+                _settingsHandler.SetEmailIsExpanded(value);
+                RaisePropertyChanged(() => IsExpanded);
             }
         }
     }

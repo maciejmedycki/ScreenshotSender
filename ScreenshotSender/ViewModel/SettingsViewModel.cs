@@ -1,9 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using log4net;
 using ScreenshotSender.Model.Interface;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace ScreenshotSender.ViewModel
 {
@@ -16,26 +18,36 @@ namespace ScreenshotSender.ViewModel
         private bool _autoStart;
         private int _checkInterval;
         private ObservableCollection<DisplayViewModel> _displays;
+        private bool _isExpanded;
         private string _lastFileToAttachLocation;
+        private IOpenFileDialog _openFileDialog;
 
-        public SettingsViewModel(ISettingsHandler settingsHandler, IDisplayHandler displayHandler)
+        private ICommand _showFolderDialogCommand;
+
+        public SettingsViewModel(ISettingsHandler settingsHandler, IDisplayHandler displayHandler, IOpenFileDialog openFileDialog)
         {
             if (settingsHandler == null)
             {
-                throw new ArgumentException("Parameter cannot be null", "settingsHandler");
+                throw new ArgumentException("Parameter cannot be null", nameof(settingsHandler));
             }
             if (displayHandler == null)
             {
-                throw new ArgumentException("Parameter cannot be null", "displayHandler");
+                throw new ArgumentException("Parameter cannot be null", nameof(displayHandler));
+            }
+            if (openFileDialog == null)
+            {
+                throw new ArgumentException("Parameter cannot be null", nameof(openFileDialog));
             }
             _settingsHandler = settingsHandler;
             _displayHandler = displayHandler;
+            _openFileDialog = openFileDialog;
             _checkInterval = settingsHandler.GetCheckInterval();
             _autoStart = settingsHandler.GetAutoStart();
             _attachLastFileFromLocation = settingsHandler.GetAttachLastFileFromLocation();
             _lastFileToAttachLocation = settingsHandler.GetLastFileToAttachLocation();
             var displays = _displayHandler.Get().Select(d => new DisplayViewModel(d, SaveDisplaySettings));
             _displays = new ObservableCollection<DisplayViewModel>(displays);
+            _isExpanded = settingsHandler.GetSettingsIsExpanded();
         }
 
         public bool AttachLastFileFromLocation
@@ -93,6 +105,20 @@ namespace ScreenshotSender.ViewModel
             }
         }
 
+        public bool IsExpanded
+        {
+            get
+            {
+                return _isExpanded;
+            }
+            set
+            {
+                _isExpanded = value;
+                _settingsHandler.SetSettingsIsExpanded(value);
+                RaisePropertyChanged(() => IsExpanded);
+            }
+        }
+
         public string LastFileToAttachLocation
         {
             get
@@ -104,6 +130,27 @@ namespace ScreenshotSender.ViewModel
                 _lastFileToAttachLocation = value;
                 _settingsHandler.SetLastFileToAttachLocation(value);
                 RaisePropertyChanged(() => LastFileToAttachLocation);
+            }
+        }
+
+        public ICommand ShowFolderDialogCommand
+        {
+            get
+            {
+                if (_showFolderDialogCommand == null)
+                {
+                    _showFolderDialogCommand = new RelayCommand(DoShowFolderDialogCommand);
+                }
+                return _showFolderDialogCommand;
+            }
+        }
+
+        public void DoShowFolderDialogCommand()
+        {
+            var directory = _openFileDialog.ChooseFolderPath();
+            if (!string.IsNullOrWhiteSpace(directory))
+            {
+                LastFileToAttachLocation = directory;
             }
         }
 
