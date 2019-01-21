@@ -8,8 +8,8 @@ namespace ScreenshotSender.ViewModel
     public class EmailSettingsViewModel : ViewModelBase
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(EmailSettingsViewModel));
-        private readonly ISettingsHandler _settingsHandler;
 
+        private readonly ISettingsHandler _settingsHandler;
         private string _emailFrom;
         private string _emailFromAlias;
         private string _emailFromPassword;
@@ -22,11 +22,7 @@ namespace ScreenshotSender.ViewModel
 
         public EmailSettingsViewModel(ISettingsHandler settingsHandler)
         {
-            if (settingsHandler == null)
-            {
-                throw new ArgumentException("Parameter cannot be null", nameof(settingsHandler));
-            }
-            _settingsHandler = settingsHandler;
+            _settingsHandler = settingsHandler ?? throw new ArgumentException("Parameter cannot be null", nameof(settingsHandler));
             _emailFrom = settingsHandler.GetEmailFrom();
             _emailFromAlias = settingsHandler.GetEmailFromAlias();
             _emailTo = settingsHandler.GetEmailTo();

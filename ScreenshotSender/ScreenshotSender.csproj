@@ -78,6 +78,7 @@
     <Compile Include="Model\Interface\ISettingsHandler.cs" />
     <Compile Include="Model\Interface\IWindowMinimizer.cs" />
     <Compile Include="Model\LocalizedStrings.cs" />
+    <Compile Include="Model\LogAppender.cs" />
     <Compile Include="Model\MachineKeyHandler.cs" />
     <Compile Include="Model\Messages\ScreenShotTakenMessage.cs" />
     <Compile Include="Model\MimeTypes.cs" />

@@ -1,5 +1,6 @@
 ﻿using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Threading;
 using log4net;
 using ScreenshotSender.Model;
 using ScreenshotSender.Model.Actions;
@@ -13,22 +14,10 @@ namespace ScreenshotSender.ViewModel
 
         public ViewModelLocator()
         {
+            DispatcherHelper.Initialize();
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-
-            //TODO: create ModelLocator?
-            SimpleIoc.Default.Register<ISettingsHandler, SettingsHandler>();
-            SimpleIoc.Default.Register<IMachineKeyHandler, MachineKeyHandler>();
-            SimpleIoc.Default.Register<IDisplayHandler, DisplayHandler>();
-            SimpleIoc.Default.Register<IActionHandler, ActionHandler>();
-            SimpleIoc.Default.Register<IWindowMinimizer, WindowMinimizer>();
-            SimpleIoc.Default.Register<IScreenshotTaker, ScreenshotTaker>();
-            SimpleIoc.Default.Register<ILastFileCollector, LastFileCollector>();
-            SimpleIoc.Default.Register<IOpenFileDialog, OpenFileDialog>();
-
-            SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<SettingsViewModel>();
-            SimpleIoc.Default.Register<ActionsViewModel>();
-            SimpleIoc.Default.Register<EmailSettingsViewModel>();
+            RegisterModels();
+            RegisterViewModels();
         }
 
         public MainViewModel MainViewModel
@@ -37,6 +26,26 @@ namespace ScreenshotSender.ViewModel
             {
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
             }
+        }
+
+        private void RegisterModels()
+        {
+            SimpleIoc.Default.Register<ISettingsHandler, SettingsHandler>();
+            SimpleIoc.Default.Register<IMachineKeyHandler, MachineKeyHandler>();
+            SimpleIoc.Default.Register<IDisplayHandler, DisplayHandler>();
+            SimpleIoc.Default.Register<IActionHandler, ActionHandler>();
+            SimpleIoc.Default.Register<IWindowMinimizer, WindowMinimizer>();
+            SimpleIoc.Default.Register<IScreenshotTaker, ScreenshotTaker>();
+            SimpleIoc.Default.Register<ILastFileCollector, LastFileCollector>();
+            SimpleIoc.Default.Register<IOpenFileDialog, OpenFileDialog>();
+        }
+
+        private void RegisterViewModels()
+        {
+            SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<SettingsViewModel>();
+            SimpleIoc.Default.Register<ActionsViewModel>();
+            SimpleIoc.Default.Register<EmailSettingsViewModel>();
         }
     }
 }

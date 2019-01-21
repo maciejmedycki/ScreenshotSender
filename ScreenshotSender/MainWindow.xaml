@@ -8,8 +8,8 @@
         xmlns:view="clr-namespace:ScreenshotSender.View"
         mc:Ignorable="d"
         Title="{Binding Title}"
-        Height="600"
-        Width="800"
+        Height="620"
+        Width="826"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
     <Grid>
         <Grid.RowDefinitions>
@@ -17,6 +17,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <view:EmailSettings Grid.Row="0" DataContext="{Binding EmailSettingsViewModel}"></view:EmailSettings>
@@ -38,5 +39,9 @@
             <Button Grid.Row="1" Grid.Column="1" Content="{Binding Source={x:Static model:LocalizedStrings.TakeScreenshotCaption}}"  Command="{Binding TakeScreenshot}" />
             <Button Grid.Row="1" Grid.Column="2" Content="{Binding StartStopButtonContent}"  Command="{Binding StartStop}" />
         </Grid>
+
+        <StatusBar Grid.Row="4">
+            <StatusBarItem Content="{Binding LastLogEntry}" />
+        </StatusBar>
     </Grid>
 </Window>

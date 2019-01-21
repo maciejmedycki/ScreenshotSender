@@ -11,16 +11,8 @@ namespace ScreenshotSender.ViewModel
 
         public DisplayViewModel(Display display, Action saveAction)
         {
-            if (display == null)
-            {
-                throw new ArgumentException("Parameter cannot be null", "display");
-            }
-            if (saveAction == null)
-            {
-                throw new ArgumentException("Parameter cannot be null", "saveAction");
-            }
-            _saveAction = saveAction;
-            _display = display;
+            _saveAction = saveAction ?? throw new ArgumentException("Parameter cannot be null", nameof(saveAction));
+            _display = display ?? throw new ArgumentException("Parameter cannot be null", nameof(display));
         }
 
         public Display Display
@@ -37,7 +29,7 @@ namespace ScreenshotSender.ViewModel
             {
                 return _display.FriendlyName;
             }
-        }       
+        }
 
         public bool Selected
         {

@@ -21,26 +21,13 @@ namespace ScreenshotSender.ViewModel
         private bool _isExpanded;
         private string _lastFileToAttachLocation;
         private IOpenFileDialog _openFileDialog;
-
         private ICommand _showFolderDialogCommand;
 
         public SettingsViewModel(ISettingsHandler settingsHandler, IDisplayHandler displayHandler, IOpenFileDialog openFileDialog)
         {
-            if (settingsHandler == null)
-            {
-                throw new ArgumentException("Parameter cannot be null", nameof(settingsHandler));
-            }
-            if (displayHandler == null)
-            {
-                throw new ArgumentException("Parameter cannot be null", nameof(displayHandler));
-            }
-            if (openFileDialog == null)
-            {
-                throw new ArgumentException("Parameter cannot be null", nameof(openFileDialog));
-            }
-            _settingsHandler = settingsHandler;
-            _displayHandler = displayHandler;
-            _openFileDialog = openFileDialog;
+            _settingsHandler = settingsHandler ?? throw new ArgumentException("Parameter cannot be null", nameof(settingsHandler));
+            _displayHandler = displayHandler ?? throw new ArgumentException("Parameter cannot be null", nameof(displayHandler));
+            _openFileDialog = openFileDialog ?? throw new ArgumentException("Parameter cannot be null", nameof(openFileDialog));
             _checkInterval = settingsHandler.GetCheckInterval();
             _autoStart = settingsHandler.GetAutoStart();
             _attachLastFileFromLocation = settingsHandler.GetAttachLastFileFromLocation();

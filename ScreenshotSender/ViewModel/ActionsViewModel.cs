@@ -15,16 +15,8 @@ namespace ScreenshotSender.ViewModel
 
         public ActionsViewModel(IActionHandler actionLoader, ISettingsHandler settingsHandler)
         {
-            if (actionLoader == null)
-            {
-                throw new ArgumentException("Parameter cannot be null", nameof(actionLoader));
-            }
-            if (settingsHandler == null)
-            {
-                throw new ArgumentException("Parameter cannot be null", nameof(settingsHandler));
-            }
-            _actionLoader = actionLoader;
-            _settingsHandler = settingsHandler;
+            _actionLoader = actionLoader ?? throw new ArgumentException("Parameter cannot be null", nameof(actionLoader));
+            _settingsHandler = settingsHandler ?? throw new ArgumentException("Parameter cannot be null", nameof(settingsHandler));
             var loadedActions = actionLoader.Load();
             var actionsViewModels = loadedActions.Select(a => new ActionViewModel(a, SaveChanges));
             _actions = new ObservableCollection<ActionViewModel>(actionsViewModels);

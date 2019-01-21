@@ -11,8 +11,8 @@ namespace ScreenshotSender.ViewModel
 
         public ActionViewModel(IAction action, Action saveAction)
         {
-            _action = action;
-            _saveAction = saveAction;
+            _action = action ?? throw new ArgumentException("Parameter cannot be null", nameof(action)); ;
+            _saveAction = saveAction ?? throw new ArgumentException("Parameter cannot be null", nameof(saveAction));
         }
 
         public string Name
