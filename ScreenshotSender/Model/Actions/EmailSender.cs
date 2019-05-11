@@ -41,32 +41,34 @@ namespace ScreenshotSender.Model.Actions
 
         private void SendEmailWithScreenshots(ScreenShotTakenMessage screenShotTakenMessage)
         {
-            if (ShouldExecute)
+            try
             {
-                var addressFrom = new MailAddress(_settingsHandler.GetEmailFrom(), _settingsHandler.GetEmailFrom());
-                var addressTo = new MailAddress(_settingsHandler.GetEmailTo());
-                var mail = new MailMessage(addressFrom, addressTo);
-
-                var memoryStreamScreenshot = new MemoryStream();
-                screenShotTakenMessage.Bitmap.Save(memoryStreamScreenshot, ImageFormat.Jpeg);
-                memoryStreamScreenshot.Position = 0;
-                var linkredResourceScreenshot = new LinkedResource(memoryStreamScreenshot, MediaTypeNames.Image.Jpeg);
-
-                LinkedResource linkedResourceLastFile = null;
-                MemoryStream memoryStreamLastFile = null;
-                var latestFileInfo = _lastFileCollector.GetLastFile();
-                if (latestFileInfo != null)
+                if (ShouldExecute)
                 {
-                    memoryStreamLastFile = new MemoryStream(File.ReadAllBytes(latestFileInfo.FullName));
-                    memoryStreamLastFile.Position = 0;
-                    var mimeType = MimeTypes.GetMimeType(latestFileInfo.Name);
-                    linkedResourceLastFile = new LinkedResource(memoryStreamLastFile, mimeType);
-                }
+                    var addressFrom = new MailAddress(_settingsHandler.GetEmailFrom(), _settingsHandler.GetEmailFrom());
+                    var addressTo = new MailAddress(_settingsHandler.GetEmailTo());
+                    var mail = new MailMessage(addressFrom, addressTo);
 
-                //TODO: missing in ISettingsHandler
-                mail.Subject = "Screenshot sender";
-                //TODO: missing in ISettingsHandler
-                var htmlString = $@"<html>
+                    var memoryStreamScreenshot = new MemoryStream();
+                    screenShotTakenMessage.Bitmap.Save(memoryStreamScreenshot, ImageFormat.Jpeg);
+                    memoryStreamScreenshot.Position = 0;
+                    var linkredResourceScreenshot = new LinkedResource(memoryStreamScreenshot, MediaTypeNames.Image.Jpeg);
+
+                    LinkedResource linkedResourceLastFile = null;
+                    MemoryStream memoryStreamLastFile = null;
+                    var latestFileInfo = _lastFileCollector.GetLastFile();
+                    if (latestFileInfo != null)
+                    {
+                        memoryStreamLastFile = new MemoryStream(File.ReadAllBytes(latestFileInfo.FullName));
+                        memoryStreamLastFile.Position = 0;
+                        var mimeType = MimeTypes.GetMimeType(latestFileInfo.Name);
+                        linkedResourceLastFile = new LinkedResource(memoryStreamLastFile, mimeType);
+                    }
+
+                    //TODO: missing in ISettingsHandler
+                    mail.Subject = "Screenshot sender";
+                    //TODO: missing in ISettingsHandler
+                    var htmlString = $@"<html>
                       <body>
                       <p>
                         New screenshot was taken by ScreenShot sender.
@@ -78,52 +80,57 @@ namespace ScreenshotSender.Model.Actions
                       </html>
                      ";
 
-                if (linkedResourceLastFile != null && linkedResourceLastFile.ContentType.MediaType.Contains("image"))
-                {
-                    htmlString = htmlString.Replace("#$LATESTFILELINKEDRESOURCEHOLDER$#", $"<img src = 'cid: { linkedResourceLastFile.ContentId}' />");
-                }
-                else
-                {
-                    htmlString = htmlString.Replace("#$LATESTFILELINKEDRESOURCEHOLDER$#", string.Empty);
-                }
-                var alternateView = AlternateView.CreateAlternateViewFromString(htmlString, null, MediaTypeNames.Text.Html);
-                alternateView.LinkedResources.Add(linkredResourceScreenshot);
-                if (linkedResourceLastFile != null)
-                {
-                    if (linkedResourceLastFile.ContentType.MediaType.Contains("image"))
+                    if (linkedResourceLastFile != null && linkedResourceLastFile.ContentType.MediaType.Contains("image"))
                     {
-                        alternateView.LinkedResources.Add(linkedResourceLastFile);
+                        htmlString = htmlString.Replace("#$LATESTFILELINKEDRESOURCEHOLDER$#", $"<img src = 'cid: { linkedResourceLastFile.ContentId}' />");
                     }
                     else
                     {
-                        mail.Attachments.Add(new Attachment(latestFileInfo.FullName));
+                        htmlString = htmlString.Replace("#$LATESTFILELINKEDRESOURCEHOLDER$#", string.Empty);
+                    }
+                    var alternateView = AlternateView.CreateAlternateViewFromString(htmlString, null, MediaTypeNames.Text.Html);
+                    alternateView.LinkedResources.Add(linkredResourceScreenshot);
+                    if (linkedResourceLastFile != null)
+                    {
+                        if (linkedResourceLastFile.ContentType.MediaType.Contains("image"))
+                        {
+                            alternateView.LinkedResources.Add(linkedResourceLastFile);
+                        }
+                        else
+                        {
+                            mail.Attachments.Add(new Attachment(latestFileInfo.FullName));
+                        }
+                    }
+
+                    mail.AlternateViews.Add(alternateView);
+
+                    var smtp = new SmtpClient();
+                    smtp.Host = _settingsHandler.GetEmailSmtpHost();
+                    smtp.Port = _settingsHandler.GetEmailSmtpPort();
+                    smtp.EnableSsl = _settingsHandler.GetEmailSmtpEnableSsl();
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new NetworkCredential(_settingsHandler.GetEmailSmtpUserName(), _settingsHandler.GetEmailFromPassword());
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.Timeout = 20000;
+
+                    smtp.Send(mail);
+
+                    //TODO: disposing!
+                    smtp.Dispose();
+                    mail.Dispose();
+                    //smtp.SendAsync(mail, null);
+                    memoryStreamScreenshot.Dispose();
+                    linkredResourceScreenshot.Dispose();
+                    if (linkedResourceLastFile != null)
+                    {
+                        linkedResourceLastFile.Dispose();
+                        memoryStreamLastFile.Dispose();
                     }
                 }
-
-                mail.AlternateViews.Add(alternateView);
-
-                var smtp = new SmtpClient();
-                smtp.Host = _settingsHandler.GetEmailSmtpHost();
-                smtp.Port = _settingsHandler.GetEmailSmtpPort();
-                smtp.EnableSsl = _settingsHandler.GetEmailSmtpEnableSsl();
-                smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential(_settingsHandler.GetEmailSmtpUserName(), _settingsHandler.GetEmailFromPassword());
-                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtp.Timeout = 20000;
-
-                smtp.Send(mail);
-
-                //TODO: disposing!
-                smtp.Dispose();
-                mail.Dispose();
-                //smtp.SendAsync(mail, null);
-                memoryStreamScreenshot.Dispose();
-                linkredResourceScreenshot.Dispose();
-                if (linkedResourceLastFile != null)
-                {
-                    linkedResourceLastFile.Dispose();
-                    memoryStreamLastFile.Dispose();
-                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(LocalizedStrings.EmailSenderErrorMessage, ex);
             }
         }
 

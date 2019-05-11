@@ -30,25 +30,25 @@
             <Label Grid.Column="0" Grid.Row="1" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSettingsEmailFromAlias}}"></Label>
             <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding EmailFromAlias}" />
 
-            <Label Grid.Column="0" Grid.Row="2" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSettingsEmialToPassword}}"></Label>
-            <PasswordBox Grid.Column="1" Grid.Row="2" PasswordChanged="PasswordBox_PasswordChanged" Name="PasswordBox" />
+            <Label Grid.Column="0" Grid.Row="2" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSmtpHost}}"></Label>
+            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding EmailSmtpHost}" />
 
-            <Label Grid.Column="0" Grid.Row="3" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSettingsEmailTo}}"></Label>
-            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding EmailTo}" />
+            <Label Grid.Column="0" Grid.Row="3" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSmtpPort}}"></Label>
+            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding EmailSmtpPort}" />
 
-            <Label Grid.Column="0" Grid.Row="4" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSmtpHost}}"></Label>
-            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding EmailSmtpHost}" />
-
-            <Label Grid.Column="0" Grid.Row="5" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSmtpPort}}"></Label>
-            <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding EmailSmtpPort}" />
-
-            <Label Grid.Column="0" Grid.Row="6" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSmtpEnableSsl}}"></Label>
-            <Grid Grid.Column="1" Grid.Row="6">
+            <Label Grid.Column="0" Grid.Row="4" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSmtpEnableSsl}}"></Label>
+            <Grid Grid.Column="1" Grid.Row="4">
                 <CheckBox IsChecked="{Binding EmailSmtpEnableSsl, Mode=TwoWay}" />
             </Grid>
 
-            <Label Grid.Column="0" Grid.Row="7" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSmtpUserName}}"></Label>
-            <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding EmailSmtpUserName}" />
+            <Label Grid.Column="0" Grid.Row="5" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSmtpUserName}}"></Label>
+            <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding EmailSmtpUserName}" />
+
+            <Label Grid.Column="0" Grid.Row="6" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSmtpUserPassword}}"></Label>
+            <PasswordBox Grid.Column="1" Grid.Row="6" PasswordChanged="PasswordBox_PasswordChanged" Name="PasswordBox" />
+
+            <Label Grid.Column="0" Grid.Row="7" Content="{Binding Source={x:Static model:LocalizedStrings.EmailSettingsEmailTo}}"></Label>
+            <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding EmailTo}" />
             
         </Grid>
     </Expander>
