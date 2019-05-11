@@ -4,7 +4,7 @@
     {
         public const string ScreenshotSenderTitle = "Screenshot Sender";
 
-        public const string MainWindowStartCaption = "Minimiaze and start";
+        public const string MainWindowStartCaption = "Minimize and start";
         public const string MainWindowStopCaption = "Stop";
         public const string TakeScreenshotCaption = "Take screenshot";
 
